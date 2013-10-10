@@ -12,7 +12,8 @@ include_recipe 'titan::rexster-service'
 
 execute "restart-rexster" do
 	command "echo perform configure operation"
-	only_if { node[:titan][:opsworks][:es_hostname_changed] == true}
+	only_if { node[:titan][:opsworks][:es_hostname_changed] ||
+		node[:titan][:opsworks][:hbase_master_changed] }
 
 	notifies :create, "template[rexster_xml]", :immediately
 	notifies :restart, "service[rexster]", :delayed

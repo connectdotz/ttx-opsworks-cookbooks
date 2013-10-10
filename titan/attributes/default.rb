@@ -14,6 +14,8 @@
 # opsworks
 default[:titan][:opsworks][:es_layer] = 'es'
 default[:titan][:opsworks][:es_hostname_changed] = false
+default[:titan][:opsworks][:hbase_master_layer] = 'hbase-master'
+default[:titan][:opsworks][:hbase_master_changed] = false
 
 # runtime env
 default['titan']['titan_version'] = '0.3.2'
