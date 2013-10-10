@@ -1,0 +1,10 @@
+{
+    "run_list": [ 
+		  "recipe[titan::setup]"
+    ],
+    "titan" : {
+	"base_dir" : "/opt/chef-test3",
+	"runtime_env" : "beta1"
+    }
+}
+
