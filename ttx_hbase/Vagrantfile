@@ -127,6 +127,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   	chef.cookbooks_path = "../"
   	chef.add_recipe "ttx_hbase::setup-hadoop"
   	chef.add_recipe "ttx_hbase::setup-hbase"
+  	chef.add_recipe "ttx_hbase::start-hadoop-namenode"
 	chef.log_level = :info
   end
 

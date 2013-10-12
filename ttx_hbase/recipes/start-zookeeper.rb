@@ -10,3 +10,14 @@ execute "start-zookeeper" do
 	notifies :restart, "service[zookeeper]"
 end
 
+monitrc "zookeeper" do
+    template_cookbook "ttx_common"
+    template_source "basic-monitrc.conf.erb"
+    variables({
+     :monit_service => 'zookeeper',
+     :monit_check_type => 'pidfile',
+     :monit_service_check_target  => "#{node[:ttx_hbase][:hadoop][:pid_dir]}/zookeeper.pid",
+     :monit_service_group => 'hbase'
+  })
+end
+

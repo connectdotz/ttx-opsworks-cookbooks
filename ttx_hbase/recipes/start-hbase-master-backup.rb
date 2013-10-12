@@ -13,3 +13,15 @@ execute "start-hbase-master-backup" do
 	notifies :restart, "service[hbase-master-backup]"
 end
 
+monitrc "hbase-master-backup" do
+    template_cookbook "ttx_common"
+    template_source "basic-monitrc.conf.erb"
+    variables({
+     :monit_service => 'hbase-master-backup',
+     :monit_check_type => 'pidfile',
+     :monit_service_check_target  => "#{node[:ttx_hbase][:hadoop][:pid_dir]}/hbase-master-backup.pid",
+     :monit_service_group => 'hbase'
+  })
+end
+
+
