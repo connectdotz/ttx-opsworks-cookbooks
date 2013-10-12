@@ -31,6 +31,7 @@ default['titan']['rexster_start_delay'] = 0
 
 # titan logging and debugging
 default['titan']['log_dir'] = '/var/log/titan'
+default['titan']['pid_dir'] = '/var/titan/pid'
 default['titan']['log_level'] = 'INFO'
 default['titan']['debug'] = false 
 

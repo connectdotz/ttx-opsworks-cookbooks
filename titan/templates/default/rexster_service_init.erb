@@ -27,6 +27,7 @@ REXSTER_USER="root"
 # JAVA_OPTIONS only gets used on start
 #JAVA_OPTIONS="-Xms64m -Xmx512m"
 JAVA_OPTIONS="<%= node['titan']['rexster_java_options'] %>"
+$REXTER_PID_FILE ="<%= node['titan']['pid_dir'] %>/rexster.pid"
 
 usage() {
     echo "Usage: `basename $0`: <start|stop|status>"
@@ -42,7 +43,7 @@ start() {
     fi
     export JAVA_OPTIONS
     echo "Starting Rexster server...($REXTER_SERVICE_DEBUG)"
-    su -c "cd \"$REXSTER_DIR\"; /usr/bin/nohup ./bin/rexster.sh -s $REXTER_SERVICE_DEBUG 1>$REXSTER_LOG_DIR/rexster-service.out 2>$REXSTER_LOG_DIR/rexster-service.err &" $REXSTER_USER
+    su -c "cd \"$REXSTER_DIR\"; /usr/bin/nohup ./bin/rexster.sh -s $REXTER_SERVICE_DEBUG 1>$REXSTER_LOG_DIR/rexster-service.out 2>$REXSTER_LOG_DIR/rexster-service.err &; echo $! > $REXTER_PID_FILE" $REXSTER_USER
 }
 
 stop() {
@@ -53,16 +54,24 @@ stop() {
         return 0
     fi
     echo "Stopping Rexster server..."
-    su -c "cd \"$REXSTER_DIR\"; /usr/bin/nohup ./bin/rexster.sh -x 1>$REXSTER_LOG_DIR/rexster-service-stop.out 2>$REXSTER_LOG_DIR/rexster-service-stop.err &" $REXSTER_USER
+    su -c "cd \"$REXSTER_DIR\"; /usr/bin/nohup ./bin/rexster.sh -x 1>$REXSTER_LOG_DIR/rexster-service-stop.out 2>$REXSTER_LOG_DIR/rexster-service-stop.err; rm -f $REXTER_PID_FILE" $REXSTER_USER
 }
 
 status() {
-    PID=`ps -ef | grep $REXSTER_USER | grep java | grep -v grep | awk '{print $2}'`
-    if [ "x$PID" = "x" ]
-    then
-        PID=0
-    fi
+    if [ -f $REXTER_PID_FILE ]; then
+		pid=$(cat $REXTER_PID_FILE)
+  		if [[ $pid && -d "/proc/$pid" ]]; then
+	    	echo "rexster is already running"
+		else
+	    	echo "rexster has a staled pid: $pid"
+            pid=0
+		fi
+	else
+		echo "rexster is not running"
+        pid=0
+	fi
 
+    PID=$pid
     # if PID is greater than 0 then Rexster is running, else it is not
     # return $PID
 }

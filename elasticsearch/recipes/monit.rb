@@ -3,7 +3,7 @@
 begin
   monitrc "elasticsearch" do
     template_cookbook "elasticsearch"
-    source "elasticsearch.conf.rb"
+    source "elasticsearch.conf.erb"
   end
 rescue Exception => e
   Chef::Log.error "The 'monit' recipe is not included in the node run_list or the 'monitrc' resource is not defined"

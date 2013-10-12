@@ -4,6 +4,18 @@
 
 include_recipe "ttx_hbase::hadoop-services"
 
+monitrc "hadoop-namenode" do
+    template_cookbook "ttx_common"
+    source "basic-monitrc.conf.erb"
+    variables({
+     :monit_service => 'hadoop-namenode',
+     :monit_check_type => 'pid',
+     :monit_service_check_target  => "#{node[:ttx_hbase][:hadoop][:pid_dir]}/hadoop-namenode.pid",
+     :monit_service_group => 'hadoop',
+  })
+  action: nothing
+end
+
 ruby_block "format-and-start-namenode" do
 	block do
 		node[:ttx_hbase][:hadoop][:name_dir].each do |dir|
@@ -17,6 +29,8 @@ ruby_block "format-and-start-namenode" do
 	end
     notifies :enable, resources(:service => 'hadoop-namenode')
     notifies :restart, resources(:service => 'hadoop-namenode')
+
+    notifies :enable, resources(:monitrc => 'hadoop-namenode')
 end
 
 

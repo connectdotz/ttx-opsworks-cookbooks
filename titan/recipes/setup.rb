@@ -71,9 +71,13 @@ bash "install_titan" do
     #tar -xvopf /tmp/ttx-titan-dist.tar.gz
     #rm -rf /tmp/ttx-titan-dist.tar.gz
 
-    ####### initialize log directory
+    ####### initialize directories ########
+
     mkdir -p #{log_dir}
     chmod og+r #{log_dir}
+
+    mkdir -p #{node['titan']['pid_dir']}
+    chmod og+r #{node['titan']['pid_dir']}
   EOH
   # notifies :run, "bash[setup_rexster_titan]", :immediately
   notifies :create, "template[rexster_xml]", :immediately
