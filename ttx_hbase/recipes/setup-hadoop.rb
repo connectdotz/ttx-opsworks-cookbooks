@@ -3,6 +3,8 @@
 #
 
 
+include_recipe 'ttx_common::setup'
+
 include_recipe 'ttx_hbase::setup-hadoop-initd'
 
 include_recipe 'ttx_hbase::opsworks-context'

@@ -4,6 +4,8 @@
 
 #include_recipe 'install-hbase'
 
+include_recipe 'ttx_common::setup'
+
 include_recipe 'ttx_hbase::setup-hbase-initd'
 
 include_recipe 'ttx_hbase::opsworks-context'
