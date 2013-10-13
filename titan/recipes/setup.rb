@@ -6,6 +6,8 @@
 #  source "ttx-titan-dist.tar.gz"
 #end
 
+include_recipe 'ttx_common::setup'
+
 include_recipe 'titan::opsworks-context'
 include_recipe 'titan::setup-config'
 

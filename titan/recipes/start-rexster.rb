@@ -18,4 +18,16 @@ execute 'start_rexster' do
     notifies :restart, resources(:service => 'rexster')
 end
 
+monitrc "rexster" do
+    template_cookbook "ttx_common"
+    template_source "basic-monitrc.conf.erb"
+    variables({
+     :monit_service => 'rexster',
+     :monit_check_type => 'pidfile',
+     :monit_service_check_target  => "#{node[:titan][:pid_dir]}/rexster.pid",
+     :monit_service_group => 'titan'
+  })
+end
+
+
 
