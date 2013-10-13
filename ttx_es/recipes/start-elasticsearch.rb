@@ -6,11 +6,8 @@
 #
 
 include_recipe "ttx_common::monit-service"
-include_recipe "titan::rexster-service"
 
-debug_flag = ( node['titan']['debug'] == true ? "-d" : "" )
-
-SERVICE='rexster'
+SERVICE='elasticsearch'
 
 template "monit-#{SERVICE}" do
     path "#{node[:ttx][:monit][:conf_dir]}/#{SERVICE}.monitrc"
@@ -20,7 +17,7 @@ template "monit-#{SERVICE}" do
     variables({
         :monit_service => "#{SERVICE}",
         :monit_check_type => 'pidfile',
-        :monit_service_check_target  => "#{node[:titan][:pid_dir]}/#{SERVICE}.pid",
+        :monit_service_check_target  => "#{node[:elasticsearch][:pid_file]}",
         :monit_service_group => 'titan'
     })
     notifies :restart, "service[monit]"
@@ -28,13 +25,9 @@ template "monit-#{SERVICE}" do
     action :nothing
 end
 
-# execute delay
-execute 'start_rexster' do
-    command "sleep #{node['titan']['rexster_start_delay']}"
-    environment ({ "$REXTER_SERVICE_DEBUG" => "#{debug_flag}"} )
-
-    notifies :enable, resources(:service => "#{SERVICE}")
-    notifies :restart, resources(:service => "#{SERVICE}")
+service "#{SERVICE}" do
+    supports :status => true, :restart => true
+    action [ :enable, :restart ]
 
     notifies :create, resources(:template => "monit-#{SERVICE}")
 end

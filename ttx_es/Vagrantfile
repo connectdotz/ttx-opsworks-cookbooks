@@ -127,6 +127,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   	chef.cookbooks_path = "../"
   	chef.add_recipe "java"
   	chef.add_recipe "ttx_es::setup"
+  	chef.add_recipe "ttx_es::start-elasticsearch"
+    
 	chef.log_level = :info
 
 	chef.json = {

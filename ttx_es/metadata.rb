@@ -7,4 +7,5 @@ description "wrapper cookbook for installing elasticsearch"
 #long_description IO.read(File.join(File.dirname(__FILE__), 'README.markdown'))
 version "0.1"
 
+depends 'ttx_common'
 depends 'elasticsearch'
