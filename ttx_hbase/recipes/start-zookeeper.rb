@@ -15,7 +15,7 @@ template "monit-#{SERVICE}" do
     variables({
         :monit_service => "#{SERVICE}",
         :monit_check_type => 'pidfile',
-        :monit_service_check_target  => "#{node[:ttx_hbase][:hbase][:pid_dir]}/#{SERVICE}.pid",
+        :monit_service_check_target  => "#{node[:ttx_hbase][:hbase][:pid_dir]}/hbase-#{node[:ttx_hbase][:hbase][:user]}-zookeeper.pid",
         :monit_service_group => 'hbase'
     })
     notifies :restart, "service[monit]"
