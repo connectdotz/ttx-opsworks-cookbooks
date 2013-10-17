@@ -4,7 +4,8 @@
 
 check process <%= @monit_service %> with <%= @monit_check_type %> <%= @monit_service_check_target %>
 
-    alert <%= node[:ttx][:monit][:mailto] %> with mail-format { from: <%= node[:ttx][:monit][:mailto] %> }
+    alert <%= node[:ttx][:monit][:mailto] %> only on { timeout, nonexist } 
+        with mail-format { from: <%= node[:ttx][:monit][:mailto] %> }
 
     start program = "/etc/init.d/<%= @monit_service %> start" with timeout <%=  @monit_service_timeout || 60 %> seconds
     stop program  = "/etc/init.d/<%= @monit_service %> stop"
