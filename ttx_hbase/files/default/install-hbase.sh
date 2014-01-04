@@ -95,7 +95,8 @@ function config_system_hadoop {
 
 # main 
 
-install_tar_pkg hadoop http://apache.cs.utah.edu/hadoop/common/stable/hadoop-1.2.1.tar.gz
-install_tar_pkg hbase http://www.carfab.com/apachesoftware/hbase/stable/hbase-0.94.12.tar.gz
+#install_tar_pkg hadoop http://apache.cs.utah.edu/hadoop/common/stable/hadoop-1.2.1.tar.gz
+install_tar_pkg hadoop http://mirror.metrocast.net/apache/hadoop/common/hadoop-1.2.1/hadoop-1.2.1.tar.gz
+install_tar_pkg hbase http://www.carfab.com/apachesoftware/hbase/stable/hbase-0.94.15.tar.gz
 
 config_system_hadoop

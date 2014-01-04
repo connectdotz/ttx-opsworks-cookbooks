@@ -26,10 +26,14 @@ end
 ruby_block "format-and-start-namenode" do
 	block do
 		node[:ttx_hbase][:hadoop][:name_dir].each do |dir|
+			Chef::Log.debug( "checking namenode dir: #{dir}" )
+            
 			if (!File.exists?("#{dir}/current/VERSION"))
 				cmd = "echo 'Y' | #{node[:ttx_hbase][:hadoop][:home]}/bin/hadoop namenode -format"
 				%x( #{cmd} )
 				Chef::Log.info( "namenode is formatted: #{cmd}" )
+            else
+			    Chef::Log.info( "namenode #{dir} is already formated" )
 			end
 			break
 		end
