@@ -37,6 +37,8 @@ execute 'start_rexster' do
     notifies :restart, resources(:service => "#{SERVICE}")
 
     notifies :create, resources(:template => "monit-#{SERVICE}")
+
+    action :nothing
 end
 
 
