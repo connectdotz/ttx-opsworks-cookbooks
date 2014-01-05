@@ -26,10 +26,10 @@ default['titan']['rexster_path'] = 'rexster-server'
 default['titan']['titan_path'] = 'titan'
 
 ## ttx extensions
-default['titan']['ttx_ext_path'] = 'ttx-ext'
-default['titan']['ttx_ext_script_jar'] = 'ThingTrixGremlineScripts-0.0.1-SNAPSHOT.jar'
-default['titan']['ttx_ext_script_app'] = 'rexster-ext-gremlin-scripts"
-default['titan']['ttx_ext_jar_app'] = 'rexster-ext-jar"
+default[:titan][:ttx_ext_path] = 'ttx-ext'
+default[:titan][:ttx_ext][:rexster_ext_lib_path] = 'rexster-ext-lib'
+default[:titan][:ttx_ext][:gremlin_scripts_path] = 'gremlin-scripts'
+default[:titan][:ttx_ext][:app] = 'titan_ext'
 
 # execution tuning
 default['titan']['rexster_java_options'] = '-Xms64m -Xmx512m'
@@ -44,10 +44,11 @@ default['titan']['debug'] = false
 # composite attributes
 node.normal['titan']['rexster_home'] = "#{node['titan']['base_dir']}/#{node['titan']['rexster_path']}"
 node.normal['titan']['titan_home'] = "#{node['titan']['base_dir']}/#{node['titan']['titan_path']}"
+node.normal['titan']['rexster_ext'] = "#{node['titan']['rexster_home']}/ext"
 
-node.normal['titan']['ttx_ext'] = "#{node['titan']['base_dir']}/#{node['titan']['ttx_ext_path']}"
-node.normal['titan']['ttx_ext_script_dir'] = "#{node['titan']['ttx_ext']}/gremlin-scripts"
-node.normal['titan']['ttx_ext_jar_dir'] = "#{node['titan']['rexster_home']}/ext/ttx"
+node.normal[:titan][:ttx_ext_home] = "#{node['titan']['base_dir']}/#{node['titan']['ttx_ext_path']}"
+node.normal['titan']['ttx_ext_script_dir'] = "#{node['titan']['ttx_ext_home']}/#{noe[:titan][:ttx_ext][:gremlin_script_path]}"
+node.normal['titan']['ttx_ext_rexster_jar_dir'] = "#{node['titan']['ttx_ext_home']}/#{noe[:titan][:ttx_ext][:rexster_ext_lib_path]}"
 
 # es
 default['titan']['es']['host_name'] = '127.0.0.1'

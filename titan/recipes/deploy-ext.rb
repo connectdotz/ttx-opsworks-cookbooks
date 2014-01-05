@@ -5,12 +5,13 @@
 # deploy rexster extensions
 #
 include_recipe 'deploy'
+include_recipe 'titan::start-rexster'
 
 node[:deploy].each do |application, deploy|
   opsworks_deploy_dir do
     user deploy[:user]
     group deploy[:group]
-    path node[:deploy_to]
+    path deploy[:deploy_to]
   end
 
   opsworks_deploy do
@@ -18,29 +19,30 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-  #install gremlin-scripts
-  ttx_ext_script_dest = "#{node[:tita][:ttx_ext_script_dir]}"
-  ttx_ext_script_jar = "#{node[:deploy_to]}/#{node[:titan][:ttx_ext_script_jar]}"
-  bash "unpack gremlin-scripts" do
-    user deploy[:user]
-    group deploy[:group]
-    code <<-EOH
-        mkdir -p #{ttx_ext_script_dest} 
-        unzip -o #{ttx_ext_script_jar} -d #{ttx_ext_script_dest} 
-    EOH
-    only_if { application == node[:titan][:ttx_ext_script_app] }
+  Chef::Log.debug( "deploying application: #{application} to #{deploy[:deploy_to]}" )
 
-	notifies :restart, "service[rexster]", :delayed
-  end
+  if (application == node[:titan][:ttx_ext_app])
 
-  #install rexster-ext-jar
-  link "#{node[:tita][:ttx_ext_jar_dir]}" do
-    to node[:deploy_to]
-    action :create
-    only_if { application == node[:titan][:ttx_ext_jar_app] }    
+    #install ttx-ext 
+    Chef::Log.debug( "install ${application} " )
 
-	notifies :restart, "service[rexster]", :delayed
-    
+    #link the app to ttx_ex_home
+    link "#{node[:titan][:ttx_ext_home]}/ext/ttx" do
+      to "#{deploy[:deploy_to]}/current"
+      action :create
+
+      notify :create "link[rexster-ttx-ext]"
+    end
+
+    #install rexster-ext-jar
+    link "rexster-ttx-ext" do
+      target_file "#{node[:titan][:rexster_ext]}/ext/ttx"
+      to "#{node[:titan][:ttx_ext_rexster_jar_dir]}"
+      action :nothing
+
+	  notifies :run, "execute[start_rexster]", :delayed
+    end
+
   end
 
 end
