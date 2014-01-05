@@ -53,7 +53,7 @@ bash "install_titan" do
     fi
 
     echo "installing titan-all ..."
-    zip_file3="titan-all-#{node['titan']['titan_version']}"
+    zip_file3="titan-server-#{node['titan']['titan_version']}"
     if [ ! -d "#{node['titan']['titan_path']}" ]; then
     	curl -# -L -k "http://s3.thinkaurelius.com/downloads/titan/$zip_file3.zip" > $zip_file3.zip
     	unzip $zip_file3.zip 
