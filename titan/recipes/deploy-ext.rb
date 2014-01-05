@@ -19,30 +19,34 @@ node[:deploy].each do |application, deploy|
     app application
   end
 
-  Chef::Log.debug( "deploying application: #{application} to #{deploy[:deploy_to]}" )
+  Chef::Log.debug( "deploying application: #{application}" )
 
-  if (application == node[:titan][:ttx_ext_app])
+  if (application == node[:titan][:ttx_ext][:app])
 
     #install ttx-ext 
-    Chef::Log.debug( "install ${application} " )
+    Chef::Log.debug( "installing ${application} " )
 
     #link the app to ttx_ex_home
-    link "#{node[:titan][:ttx_ext_home]}/ext/ttx" do
+    link "#{node[:titan][:ttx_ext_home]}" do
       to "#{deploy[:deploy_to]}/current"
       action :create
 
-      notify :create "link[rexster-ttx-ext]"
+      #notifies :create, "link[rexster-ttx-ext]", :immediately
     end
 
     #install rexster-ext-jar
     link "rexster-ttx-ext" do
-      target_file "#{node[:titan][:rexster_ext]}/ext/ttx"
+      target_file "#{node[:titan][:rexster_ext]}/ttx"
       to "#{node[:titan][:ttx_ext_rexster_jar_dir]}"
-      action :nothing
-
-	  notifies :run, "execute[start_rexster]", :delayed
+      action :create
     end
 
+    execute "restart-rexster" do
+	  command "echo restart rexster-service for ttx-ext deployment"
+	  notifies :run, "execute[start_rexster]", :delayed
+    end
+  else 
+    Chef::Log.debug( "ignoring application: ${application} " )
   end
 
 end
