@@ -55,3 +55,9 @@ default['titan']['es']['host_name'] = '127.0.0.1'
 
 #hbase
 default['titan']['hbase']['host_name'] = '127.0.0.1'
+
+#java
+node.override['java']['oracle']['accept_oracle_download_terms'] = true
+node.override['java']['jdk_version'] = '7'
+node.override['java']['install_flavor'] = 'oracle'
+

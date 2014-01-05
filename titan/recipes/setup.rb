@@ -69,7 +69,7 @@ bash "install_titan" do
     
     #fix rexster/titan lucent library conflict
     mkdir #{rexster_home}/titan_conflict
-    mv #{rexster_home}/lib/lucene* #{rexster_home}/titan_conflict
+    mv #{rexster_home}/lib/*lucene* #{rexster_home}/titan_conflict
     
     #tar -xvopf /tmp/ttx-titan-dist.tar.gz
     #rm -rf /tmp/ttx-titan-dist.tar.gz
