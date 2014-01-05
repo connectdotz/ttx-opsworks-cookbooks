@@ -82,18 +82,7 @@
 				</allows>
 			</extensions>
 		</graph>
-		<graph>
-			<graph-name>tinkergraph</graph-name>
-			<graph-type>tinkergraph</graph-type>
-			<graph-location>data/graph-example-1</graph-location>
-			<graph-mock-tx>true</graph-mock-tx>
-			<extensions>
-				<allows>
-					<allow>tp:gremlin</allow>
-				</allows>
-			</extensions>
-		</graph>
-
+		
 		<graph>
 			<graph-name>ttx-<%= node['titan']['runtime_env'] %></graph-name>
 			<graph-type>com.thinkaurelius.titan.tinkerpop.rexster.TitanGraphConfiguration</graph-type>

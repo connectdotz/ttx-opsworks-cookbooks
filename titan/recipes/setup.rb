@@ -52,8 +52,8 @@ bash "install_titan" do
         echo "directory existed, skipped"
     fi
 
-    echo "installing titan-hbase ..."
-    zip_file3="titan-hbase-#{node['titan']['titan_version']}"
+    echo "installing titan-all ..."
+    zip_file3="titan-all-#{node['titan']['titan_version']}"
     if [ ! -d "#{node['titan']['titan_path']}" ]; then
     	curl -# -L -k "http://s3.thinkaurelius.com/downloads/titan/$zip_file3.zip" > $zip_file3.zip
     	unzip $zip_file3.zip 
@@ -64,6 +64,7 @@ bash "install_titan" do
     fi
 
     #install titan with rexster
+    rm -f #{rexster_home}/ext/titan
     ln -s #{titan_home}/lib #{rexster_home}/ext/titan
     
     #fix rexster/titan lucent library conflict

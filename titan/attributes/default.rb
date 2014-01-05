@@ -47,7 +47,7 @@ node.normal['titan']['titan_home'] = "#{node['titan']['base_dir']}/#{node['titan
 node.normal['titan']['rexster_ext'] = "#{node['titan']['rexster_home']}/ext"
 
 node.normal[:titan][:ttx_ext_home] = "#{node['titan']['base_dir']}/#{node['titan']['ttx_ext_path']}"
-node.normal['titan']['ttx_ext_script_dir'] = "#{node['titan']['ttx_ext_home']}/#{node[:titan][:ttx_ext][:gremlin_script_path]}"
+node.normal['titan']['ttx_ext_script_dir'] = "#{node['titan']['ttx_ext_home']}/#{node[:titan][:ttx_ext][:gremlin_scripts_path]}"
 node.normal['titan']['ttx_ext_rexster_jar_dir'] = "#{node['titan']['ttx_ext_home']}/#{node[:titan][:ttx_ext][:rexster_ext_lib_path]}"
 
 # es

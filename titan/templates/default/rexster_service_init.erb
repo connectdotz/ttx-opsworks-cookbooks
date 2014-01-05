@@ -45,7 +45,7 @@ start() {
     echo "Starting Rexster server...($REXTER_SERVICE_DEBUG)"
 
     cd "$REXSTER_DIR"
-    /usr/bin/nohup ./bin/rexster.sh -s $REXTER_SERVICE_DEBUG 1>$REXSTER_LOG_DIR/rexster-service.out 2>$REXSTER_LOG_DIR/rexster-service.err &
+    /usr/bin/nohup ./bin/rexster.sh -s -c ./rexster.xml $REXTER_SERVICE_DEBUG 1>$REXSTER_LOG_DIR/rexster-service.out 2>$REXSTER_LOG_DIR/rexster-service.err &
     echo $! > $REXTER_PID_FILE
 }
 
@@ -58,7 +58,7 @@ stop() {
     fi
     echo "Stopping Rexster server..."
     cd "$REXSTER_DIR"
-    /usr/bin/nohup ./bin/rexster.sh -x 1>$REXSTER_LOG_DIR/rexster-service-stop.out 2>$REXSTER_LOG_DIR/rexster-service-stop.err &
+    /usr/bin/nohup ./bin/rexster.sh -x -c ./rexster.xml 1>$REXSTER_LOG_DIR/rexster-service-stop.out 2>$REXSTER_LOG_DIR/rexster-service-stop.err &
     rm -f $REXTER_PID_FILE
 }
 
