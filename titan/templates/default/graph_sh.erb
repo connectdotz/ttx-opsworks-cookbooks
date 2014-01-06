@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DIR=$(cd $(dirname "$0"); pwd)
-mailTo = ops@thingtrix.com
+mailTo=ops@thingtrix.com
 
 function usage()
 {
@@ -20,10 +20,15 @@ function backup ()
     output=/tmp/backup.output
 
 	#generate backup script
-	backupDir=/var/opt/thingtrix/graphdb/backup
+    
+	backupDir=<%= node[:titan][:ttx_tools_backup_dir] %>
+	console=<%= node[:titan][:rexster_console_home]/bin/rexster-console.sh %>
+
 	now=$(date +"%Y_%m_%d.%H_%M")
 	backupFile=$backupDir/backup_$now.json
 	backupHistory=$backupDir/history.log
+
+    mkdir -p $backupDir
 
 	echo -e "\n\n============== $now ================\n" > $output
 	echo -e "** env:$version , graph:$graph **\n" >> $output
@@ -34,14 +39,15 @@ function backup ()
 EOI
 
 	#execute backup
-    $DIR/graphdb.sh -v $version -a start console -e $input 2>&1 >> $output
+    $console -e $input 2>&1 >> $output
 	if grep -i -q "error" $output
 	then
 		echo -e "[ failed ] ">> $output
-		send_mail "backup failed" 
+        
+		send_mail "backup failed" $output 
 	else
 		echo -e "[ ok ] : $backupFile" >> $output
-		send_mail "backup succeeded" 
+		send_mail "backup succeeded" $output
 	fi
 
     cat $output >> $backupHistory
@@ -49,11 +55,19 @@ EOI
 
 function send_mail 
 {
-    sendmail -f $mailTo -oi -t <<EOF
-    To: $mailTo
-    Subject $1
+    hostname=`hostname`
+    tmpOutput=/tmp/_ttx_graph_mail.txt
+    rm -f $tmpOutput
+    cat > $tmpOutput <<EOF
+To: $mailTo
+Subject: $hostname: $1
+
 EOF
 
+    cat $2 >> $tmpOutput
+    cat $tmpOutput | sendmail -f $mailTo -oi -t 
+
+    rm -f $tmpOutput
 }
 
 if [ $# -lt 1 ] 
@@ -99,6 +113,7 @@ case "$action" in
 	*)
 		usage;;
 esac
+
 
 
 

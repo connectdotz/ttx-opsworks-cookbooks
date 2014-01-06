@@ -43,6 +43,7 @@ default['titan']['debug'] = false
 
 # composite attributes
 node.normal['titan']['rexster_home'] = "#{node['titan']['base_dir']}/#{node['titan']['rexster_path']}"
+node.normal['titan']['rexster_console_home'] = "#{node['titan']['base_dir']}/rexster-console"
 node.normal['titan']['titan_home'] = "#{node['titan']['base_dir']}/#{node['titan']['titan_path']}"
 node.normal['titan']['rexster_ext'] = "#{node['titan']['rexster_home']}/ext"
 
@@ -62,5 +63,6 @@ node.override['java']['jdk_version'] = '7'
 node.override['java']['install_flavor'] = 'oracle'
 
 #tools
+default[:titan][:ttx_tools_backup_dir] = '/var/opt/thingtrix/graphdb/backup'
 node.normal[:titan][:tools_home] =  "#{node['titan']['base_dir']}/ttx-tools"
 
