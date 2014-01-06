@@ -17,7 +17,6 @@ function backup ()
 
 
     input=/tmp/backup.gremlin
-    output=/tmp/backup.output
 
 	#generate backup script
     
@@ -26,9 +25,12 @@ function backup ()
 
 	now=$(date +"%Y_%m_%d.%H_%M")
     backupFileName=backup_$now.json
+    outputFileName=backup_$now.out
     historyFileName=history.log
+
 	backupFile=$backupDir/$backupFileName
 	backupHistory=$backupDir/$historyFileName
+    output=/tmp/$outputFileName
 
     mkdir -p $backupDir
 
@@ -55,7 +57,7 @@ EOI
 
     cat $output >> $backupHistory
 
-    s3Upload $graph $backupHistory $historyFileName
+    s3Upload $graph $output $outputFileName
 }
 
 function send_mail 
