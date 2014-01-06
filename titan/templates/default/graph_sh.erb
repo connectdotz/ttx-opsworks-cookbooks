@@ -22,8 +22,7 @@ function backup ()
 	#generate backup script
     
 	backupDir=<%= node[:titan][:ttx_tools_backup_dir] %>
-	console=<%= node[:titan][:rexster_console_home]/bin/rexster-console.sh %>
-
+	console=<%= node[:titan][:rexster_console_home]%>/bin/rexster-console.sh 
 	now=$(date +"%Y_%m_%d.%H_%M")
 	backupFile=$backupDir/backup_$now.json
 	backupHistory=$backupDir/history.log
