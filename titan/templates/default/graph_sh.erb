@@ -23,9 +23,12 @@ function backup ()
     
 	backupDir=<%= node[:titan][:ttx_tools_backup_dir] %>
 	console=<%= node[:titan][:rexster_console_home]%>/bin/rexster-console.sh 
+
 	now=$(date +"%Y_%m_%d.%H_%M")
-	backupFile=$backupDir/backup_$now.json
-	backupHistory=$backupDir/history.log
+    backupFileName=backup_$now.json
+    historyFileName=history.log
+	backupFile=$backupDir/$backupFileName
+	backupHistory=$backupDir/$historyFileName
 
     mkdir -p $backupDir
 
@@ -46,10 +49,13 @@ EOI
 		send_mail "backup failed" $output 
 	else
 		echo -e "[ ok ] : $backupFile" >> $output
+        s3Upload $graph $backupFile $backupFileName
 		send_mail "backup succeeded" $output
 	fi
 
     cat $output >> $backupHistory
+
+    s3Upload $graph $backupHistory $historyFileName
 }
 
 function send_mail 
@@ -67,6 +73,11 @@ EOF
     cat $tmpOutput | sendmail -f $mailTo -oi -t 
 
     rm -f $tmpOutput
+}
+
+function s3Upload
+{
+    aws s3 cp $2 s3://backups.thingtrix.com/graph/$1/$3
 }
 
 if [ $# -lt 1 ] 

@@ -2,7 +2,10 @@
 # setup the tools used by titan graphs
 #
 
+include_recipe 'ttx_common::setup-aws-cmd'
+
 directory node[:titan][:tools_home] do
+  recursive true
   action :create
 end
 
