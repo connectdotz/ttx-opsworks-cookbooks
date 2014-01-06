@@ -61,3 +61,6 @@ node.override['java']['oracle']['accept_oracle_download_terms'] = true
 node.override['java']['jdk_version'] = '7'
 node.override['java']['install_flavor'] = 'oracle'
 
+#tools
+node.normal[:titan][:tools_home] =  "#{node['titan']['base_dir']}/ttx-tools"
+
